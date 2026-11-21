@@ -1,0 +1,13 @@
+node_modules/
+data/
+.env
+.env.*
+!.env.example
+lan-chat.env
+certs/
+*.pem
+*.key
+*.crt
+*.log
+npm-debug.log*
+.DS_Store

@@ -1,0 +1,89 @@
+.admin-body { min-height: 100dvh; background: #edf1ed; }
+.admin-shell { width: min(1180px, calc(100% - 34px)); min-height: 100dvh; margin: auto; padding-bottom: 60px; }
+.admin-header { height: 82px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #dce2dd; }
+.admin-brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+.admin-brand > span { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 11px 4px 11px 11px; color: white; background: var(--accent); font-weight: 650; }
+.admin-brand div { display: grid; gap: 1px; }
+.admin-brand strong { font-size: 14px; }
+.admin-brand small { color: #89948d; font-size: 9px; }
+.login-view { min-height: calc(100dvh - 82px); display: grid; place-items: center; padding: 35px 0 70px; }
+.login-card { width: min(420px, 100%); padding: 36px; border-radius: 22px 7px 22px 22px; background: var(--paper); box-shadow: 0 25px 70px rgba(35,54,45,.12); }
+.login-mark { width: 46px; height: 46px; margin-bottom: 25px; display: grid; place-items: center; border-radius: 14px 4px 14px 14px; color: white; background: var(--forest); font-weight: 650; }
+.eyebrow { margin: 0 0 7px !important; color: #7b8b82 !important; font: 600 9px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace !important; letter-spacing: .14em; }
+.login-card h1, .dashboard-title h1 { margin: 0 0 8px; font-size: clamp(27px, 4vw, 38px); line-height: 1; letter-spacing: -.045em; font-weight: 650; }
+.login-card > p:not(.eyebrow):not(.form-error) { max-width: 48ch; margin: 0 0 25px; color: #737f77; font-size: 12px; line-height: 1.7; }
+.login-card label { display: grid; gap: 7px; color: #5f6b63; font-size: 11px; }
+.login-card input, .profile-tools input, .profile-row input[type="text"], .profile-row input:not([type]) { border: 1px solid #d5ded8; border-radius: 9px 3px 9px 9px; padding: 11px 12px; color: var(--ink); background: white; outline: none; }
+.login-card input:focus, .profile-tools input:focus, .profile-row input:focus { border-color: #91afa1; box-shadow: 0 0 0 3px rgba(47,110,89,.09); }
+.login-card .send { width: 100%; margin-top: 8px; }
+.form-error { min-height: 18px; margin: 7px 0 0; color: var(--danger); font-size: 10px; }
+.dashboard { padding-top: 54px; }
+.dashboard-title { display: flex; align-items: end; justify-content: space-between; gap: 25px; }
+.dashboard-title > div > p:last-child { max-width: 60ch; margin: 0; color: #748078; font-size: 12px; line-height: 1.65; }
+.stats { margin: 32px 0 38px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.stat { min-height: 115px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; border-radius: 14px 4px 14px 14px; background: var(--paper); }
+.stat span { color: #79857d; font-size: 10px; }
+.stat strong { font: 600 28px/1 ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.profile-section { padding: 25px; border-radius: 18px 5px 18px 18px; background: var(--paper); }
+.account-section, .group-admin-section { margin-top: 18px; }
+.profile-tools { margin-bottom: 17px; display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+.profile-tools h2 { margin: 0 0 4px; font-size: 17px; }
+.profile-tools p { margin: 0; color: #8a958e; font-size: 10px; }
+.profile-tools input { width: min(300px, 45vw); padding-block: 9px; font-size: 11px; }
+.profile-list { display: grid; gap: 6px; }
+.profile-row { min-width: 0; display: grid; grid-template-columns: 42px minmax(130px, 1fr) minmax(170px, 1.4fr) 70px auto; align-items: center; gap: 13px; padding: 12px; border-top: 1px solid #e5e9e6; }
+.admin-avatar { width: 39px; height: 39px; }
+.profile-address { min-width: 0; display: grid; gap: 4px; }
+.profile-address strong { overflow: hidden; text-overflow: ellipsis; color: #39443e; font: 600 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.profile-address small { overflow: hidden; text-overflow: ellipsis; color: #7d8981; font: 9px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.profile-address span { color: #8a958e; font-size: 9px; }
+.profile-address span.online { color: var(--accent); }
+.profile-row label { min-width: 0; display: grid; gap: 4px; color: #88928c; font-size: 9px; }
+.profile-row input[name="alias"] { width: 100%; padding: 8px 9px; font-size: 11px; }
+.profile-row input[type="color"] { width: 40px; height: 32px; padding: 2px; border: 1px solid #d7ded9; border-radius: 7px; background: white; cursor: pointer; }
+.profile-actions { display: flex; gap: 6px; }
+.profile-actions button { white-space: nowrap; padding: 8px 10px; font-size: 10px; }
+.profile-empty { padding: 40px; color: #89948d; text-align: center; font-size: 12px; }
+.account-list { display: grid; gap: 6px; }
+.account-row { min-width: 0; display: grid; grid-template-columns: 180px minmax(0,1fr) auto; align-items: center; gap: 18px; padding: 14px 12px; border-top: 1px solid #e5e9e6; }
+.account-copy { min-width: 0; display: grid; gap: 4px; }
+.account-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #39443e; font-size: 12px; }
+.account-copy small { color: #7d8981; font-size: 9px; }
+.account-groups { display: flex; flex-wrap: wrap; gap: 6px; }
+.account-group-check { display: inline-flex; align-items: center; gap: 5px; padding: 6px 8px; border: 1px solid #dfe6e1; border-radius: 7px 2px 7px 7px; color: #59675f; background: #fbfcfb; font-size: 10px; cursor: pointer; }
+.account-group-check:hover { border-color: #a9c1b4; background: #f3f8f5; }
+.account-group-check input { accent-color: var(--accent); }
+.account-no-groups { color: #8a958e; font-size: 10px; }
+.account-row .send { white-space: nowrap; padding: 8px 10px; font-size: 10px; }
+.group-admin-list { display: grid; gap: 6px; }
+.group-admin-row { min-width: 0; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 18px; padding: 14px 12px; border-top: 1px solid #e5e9e6; }
+.group-admin-copy { min-width: 0; display: grid; gap: 4px; }
+.group-admin-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #39443e; font-size: 12px; }
+.group-admin-copy small { color: #7d8981; font-size: 9px; }
+.delete-group-button:hover:not(:disabled) { color: var(--danger); border-color: #d9aaa6; background: #fff4f3; }
+@media(max-width: 860px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .profile-row { grid-template-columns: 42px 1fr 70px; }
+  .alias-field { grid-column: 1 / 3; grid-row: 2; }
+  .color-field { grid-column: 3; grid-row: 2; }
+  .profile-actions { grid-column: 1 / 4; justify-content: flex-end; }
+  .account-row { grid-template-columns: 1fr auto; gap: 10px; }
+  .account-groups { grid-column: 1 / 3; grid-row: 2; }
+  .account-row .send { grid-column: 2; grid-row: 1; }
+  .group-admin-row { grid-template-columns: 1fr; gap: 10px; }
+  .delete-group-button { justify-self: start; }
+}
+@media(max-width: 540px) {
+  .admin-shell { width: min(100% - 20px, 1180px); }
+  .login-card { padding: 27px 22px; }
+  .dashboard { padding-top: 37px; }
+  .dashboard-title { align-items: flex-start; flex-direction: column; }
+  .stats { gap: 6px; }
+  .stat { min-height: 96px; padding: 15px; }
+  .profile-section { padding: 18px 12px; }
+  .profile-tools { align-items: stretch; flex-direction: column; }
+  .profile-tools input { width: 100%; }
+  .account-row { display: flex; flex-wrap: wrap; }
+  .account-copy { flex: 1 1 180px; }
+  .account-groups { width: 100%; }
+}

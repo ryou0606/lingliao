@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17201d">
+  <meta name="description" content="邻聊管理员后台">
+  <title>邻聊 · 管理员后台</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232f6e59'/%3E%3Cpath d='M17 19h30v20H29l-9 8v-8h-3z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <header class="admin-header">
+      <a class="admin-brand" href="/"><span>邻</span><div><strong>邻聊管理</strong><small>返回聊天</small></div></a>
+      <button id="logout" class="secondary" type="button" hidden>退出管理</button>
+    </header>
+
+    <section id="login-view" class="login-view">
+      <form id="login-form" class="login-card">
+        <div class="login-mark">管</div>
+        <p class="eyebrow">ADMIN CONSOLE</p>
+        <h1>管理员登录</h1>
+        <p>登录后可以为每个 IP 设置别名、头像颜色，并随机生成头像图案。</p>
+        <label>管理员密码<input id="password" type="password" autocomplete="current-password" required autofocus></label>
+        <p id="login-error" class="form-error" role="alert"></p>
+        <button class="send" type="submit">进入后台</button>
+      </form>
+    </section>
+
+    <section id="dashboard" class="dashboard" hidden>
+      <div class="dashboard-title"><div><p class="eyebrow">NETWORK OVERVIEW</p><h1>设备与身份</h1><p>同网段优先按 MAC 绑定，无法识别时使用浏览器设备 ID；名字和头像更新后会立即同步。</p></div><button id="refresh" class="secondary" type="button">刷新数据</button></div>
+      <section id="stats" class="stats" aria-label="服务统计"></section>
+      <section class="profile-section">
+        <div class="profile-tools"><div><h2>设备档案</h2><p id="profile-count"></p></div><input id="profile-search" type="search" placeholder="搜索 IP、MAC 或名字" aria-label="搜索 IP、MAC 或名字"></div>
+        <div id="profile-list" class="profile-list"></div>
+        <p id="profile-empty" class="profile-empty" hidden>还没有设备访问记录。</p>
+      </section>
+      <section class="profile-section account-section">
+        <div class="profile-tools"><div><h2>账号 Agent 读取范围</h2><p>管理员只管理普通群组的读取范围，不读取群组内容；隐私群不会出现在这里。</p></div></div>
+        <div id="account-list" class="account-list"></div>
+        <p id="account-empty" class="profile-empty" hidden>还没有注册账号。</p>
+      </section>
+      <section class="profile-section group-admin-section">
+        <div class="profile-tools"><div><h2>普通群组管理</h2><p>删除群组会清理其中消息、附件、成员归属和 Agent 授权；公共大厅不能删除。</p></div></div>
+        <div id="group-admin-list" class="group-admin-list"></div>
+        <p id="group-admin-empty" class="profile-empty" hidden>还没有可管理的普通群组。</p>
+      </section>
+    </section>
+  </main>
+  <div id="toast-region" class="toast-region" aria-live="assertive"></div>
+
+  <template id="profile-template">
+    <form class="profile-row">
+      <div class="avatar admin-avatar" aria-hidden="true"></div>
+      <div class="profile-address"><strong></strong><small></small><span></span></div>
+      <label class="alias-field"><span>别名</span><input name="alias" maxlength="40" placeholder="未设置别名"></label>
+      <label class="color-field"><span>颜色</span><input name="color" type="color"></label>
+      <div class="profile-actions"><button class="random-button secondary" type="button">随机头像</button><button class="save-button send" type="submit">保存</button></div>
+    </form>
+  </template>
+  <template id="account-template">
+    <form class="account-row">
+      <div class="account-copy"><strong></strong><small></small></div>
+      <div class="account-groups"></div>
+      <button class="save-account-button send" type="submit">保存读取范围</button>
+    </form>
+  </template>
+  <template id="group-admin-template">
+    <article class="group-admin-row">
+      <div class="group-admin-copy"><strong></strong><small></small></div>
+      <button class="delete-group-button secondary" type="button">删除群组</button>
+    </article>
+  </template>
+  <script src="/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#17201d">
+  <meta name="description" content="局域网内的文字、语音、图片与文件聊天工具">
+  <title>邻聊 · 局域网聊天</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232f6e59'/%3E%3Cpath d='M17 19h30v20H29l-9 8v-8h-3z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css?v=2.5.1">
+</head>
+<body>
+  <a class="skip-link" href="#messages">跳到消息列表</a>
+  <section id="auth-screen" class="auth-screen" hidden aria-labelledby="auth-title">
+    <div class="auth-card">
+      <div class="auth-mark">邻</div>
+      <p class="auth-eyebrow">LAN MESSENGER</p>
+      <h1 id="auth-title">选择你的聊天身份</h1>
+      <p class="auth-lead">可以直接使用这台设备的匿名身份，也可以注册账号，在手机和电脑上同时登录。</p>
+      <div id="auth-choice" class="auth-panel">
+        <button id="anonymous-button" class="auth-option" type="button"><strong>匿名使用</strong><span>资料跟着这台设备走，不需要注册账号。</span></button>
+        <button id="show-login" class="auth-option" type="button"><strong>登录账号</strong><span>使用已经注册的账号登录。</span></button>
+        <button id="show-register" class="auth-option" type="button"><strong>注册账号</strong><span>创建一个可以多端同时在线的身份。</span></button>
+      </div>
+      <form id="auth-login-form" class="auth-panel auth-form" hidden>
+        <h2>登录账号</h2>
+        <label>账号名<input id="login-username" name="username" maxlength="32" autocomplete="username" required></label>
+        <label>密码<input id="login-password" name="password" type="password" maxlength="128" autocomplete="current-password" required></label>
+        <p id="login-error" class="form-error" role="alert"></p>
+        <div class="auth-actions"><button id="login-back" class="secondary" type="button">返回</button><button class="send" type="submit">登录</button></div>
+      </form>
+      <form id="auth-register-form" class="auth-panel auth-form" hidden>
+        <h2>注册账号</h2>
+        <label>账号名<input id="register-username" name="username" maxlength="32" autocomplete="username" required></label>
+        <label>密码<input id="register-password" name="password" type="password" minlength="6" maxlength="128" autocomplete="new-password" required><small>6–128 位，不强制复杂度。</small></label>
+        <label>确认密码<input id="register-confirm" name="passwordConfirmation" type="password" minlength="6" maxlength="128" autocomplete="new-password" required></label>
+        <p id="register-error" class="form-error" role="alert"></p>
+        <div class="auth-actions"><button id="register-back" class="secondary" type="button">返回</button><button class="send" type="submit">注册并进入</button></div>
+      </form>
+    </div>
+  </section>
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">邻</span><span><strong>邻聊</strong><small>LAN MESSENGER</small></span></div>
+      <button id="edit-profile" class="identity" type="button" title="编辑我的名字和头像">
+        <div id="my-avatar" class="avatar avatar-large" aria-hidden="true"></div>
+        <div class="identity-copy"><small><span class="status-dot"></span> 当前身份 · 点击编辑</small><strong id="my-name">正在连接…</strong><span id="my-ip"></span></div>
+      </button>
+      <section class="group-section">
+        <div class="section-heading"><span>对话群组</span><button id="new-group" title="创建群组" aria-label="创建群组">＋</button></div>
+        <nav id="groups" class="groups" aria-label="群组列表"></nav>
+      </section>
+      <div class="sidebar-foot">
+        <p>同一网络，打开即聊<br>文件不限制大小<br><span id="transport-hint"></span></p>
+        <button id="agent-scope-button" class="sidebar-link-button" type="button" hidden>我的 Agent 读取范围</button>
+        <button id="allow-new-device-button" class="sidebar-link-button" type="button" hidden>允许新设备接入 1 分钟</button>
+        <small id="device-window-status" role="status" hidden></small>
+        <a id="http-link" hidden>免证书聊天入口</a>
+        <a href="/admin">管理员后台</a>
+      </div>
+    </aside>
+
+    <section class="chat-panel">
+      <header class="chat-header">
+        <div><h1 id="group-name">公共大厅</h1><p id="group-meta">正在同步在线成员…</p></div>
+        <div id="member-avatars" class="member-avatars" aria-label="在线成员"></div>
+        <button id="group-action" class="secondary" type="button">公共大厅</button>
+      </header>
+      <div id="connection-banner" class="connection-banner" hidden>连接中断，正在自动重连…</div>
+      <div id="messages" class="messages" aria-live="polite" aria-label="聊天消息"></div>
+
+      <section class="compose-area" aria-label="发送消息">
+        <div id="attachment-tray" class="attachment-tray" hidden></div>
+        <div id="upload-progress" class="upload-progress" hidden><span></span><div><i id="progress-bar"></i></div><b id="progress-text"></b></div>
+        <form id="composer" class="composer">
+          <label class="tool-button file-button" title="选择文件，可多选">
+            <input id="file-input" type="file" multiple>
+            <span aria-hidden="true">＋</span><span class="sr-only">添加文件</span>
+          </label>
+          <textarea id="message-input" rows="1" maxlength="8000" placeholder="输入消息" aria-label="消息内容"></textarea>
+          <button id="voice-button" class="tool-button voice-button" type="button" title="按住录音，松开发送" aria-label="按住录音，松开发送"><span class="mic-icon" aria-hidden="true"></span></button>
+          <button id="send-button" class="send" type="submit">发送</button>
+        </form>
+        <input id="voice-file-input" type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg,.webm,.aac,.amr,.3gp" hidden>
+        <div class="composer-options"><label id="long-text-option" class="long-text-option"><input id="long-text-toggle" type="checkbox" checked><span>长消息转 Markdown</span></label><p id="composer-hint" class="composer-hint">Enter 发送 · Shift + Enter 换行 · 支持拖放和粘贴文件 <span id="voice-security-hint" hidden>· 点麦克风选择录音文件，添加后点击发送。<a id="https-link" hidden>长按录音需安全连接</a></span></p></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="drop-overlay" class="drop-overlay" hidden><div><span>＋</span><strong>松开即可添加到聊天框</strong><small>支持文件夹外的多个文件</small></div></div>
+  <div id="recording-panel" class="recording-panel" hidden><span class="recording-dot"></span><strong id="recording-time">0:00</strong><span>松开发送 · 向外滑动取消</span></div>
+  <div id="toast-region" class="toast-region" aria-live="assertive"></div>
+
+  <dialog id="group-dialog">
+    <form method="dialog" id="group-form">
+      <div class="dialog-mark">#</div><h2>创建群组</h2><p>所有在线设备都能看到群组，并可以自行加入。</p>
+      <label>群组名称<input id="group-input" maxlength="40" placeholder="例如：项目沟通" autocomplete="off" required></label>
+      <label class="checkbox-line"><input id="private-group-input" type="checkbox"><span>创建隐私群<small>仅当前注册账号可见，适合做个人记事本</small></span></label>
+      <div class="dialog-actions"><button id="group-cancel" type="button" class="secondary">取消</button><button value="default" class="send">创建群组</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="agent-scope-dialog" class="agent-scope-dialog">
+    <form method="dialog" id="agent-scope-form">
+      <div class="dialog-mark">AI</div><h2>我的 Agent 读取范围</h2><p>只显示你已经加入的群组。隐私群只有你自己能看到，管理员也不会读取其中的内容。</p>
+      <div id="agent-scope-groups" class="agent-scope-groups"><p class="scope-empty">正在加载群组…</p></div>
+      <p id="agent-scope-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions"><button id="agent-scope-cancel" type="button" class="secondary">取消</button><button id="agent-scope-save" value="default" class="send" type="submit">保存读取范围</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="profile-dialog" class="profile-dialog">
+    <form method="dialog" id="profile-form">
+      <div class="profile-editor-head">
+        <div id="profile-avatar-preview" class="avatar profile-avatar-preview" aria-hidden="true"></div>
+        <div><h2>我的资料</h2><p>资料优先绑定当前设备的 MAC；无法识别时绑定此浏览器。</p></div>
+      </div>
+      <label>显示名字<input id="profile-name" maxlength="40" placeholder="留空则显示当前 IP" autocomplete="nickname"></label>
+      <div class="profile-fields">
+        <label>头像颜色<input id="profile-color" type="color"></label>
+        <div class="avatar-tools">
+          <label class="secondary upload-avatar">上传头像<input id="profile-avatar-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+          <button id="random-avatar" class="secondary" type="button">随机生成</button>
+          <button id="clear-avatar" class="text-button" type="button">恢复图案</button>
+        </div>
+      </div>
+      <p id="profile-identity-hint" class="profile-identity-hint"></p>
+      <p id="profile-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions"><button id="switch-identity" class="secondary" type="button">切换身份</button><button id="profile-cancel" type="button" class="secondary">取消</button><button value="default" class="send">保存资料</button></div>
+    </form>
+  </dialog>
+
+  <template id="message-template">
+    <article class="message">
+      <div class="avatar message-avatar" aria-hidden="true"></div>
+      <div class="message-column">
+        <div class="message-head"><strong></strong><span class="sender-ip"></span><time></time></div>
+        <div class="message-body"></div>
+        <div class="message-actions"><button class="copy-message" type="button">复制</button><button class="retract-message" type="button">撤回</button></div>
+      </div>
+    </article>
+  </template>
+  <script src="/app.js?v=2.5.1"></script>
+</body>
+</html>
