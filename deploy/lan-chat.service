@@ -1,0 +1,25 @@
+[Unit]
+Description=Lan Chat messaging and file transfer service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/services/lan-chat
+# install.sh rewrites the node path below to the node binary found on PATH.
+ExecStart=/usr/bin/node %h/services/lan-chat/server.js
+Restart=always
+RestartSec=3
+Environment=NODE_ENV=production
+Environment=PORT=9900
+# Optional. Node does not load this file by itself; systemd injects it.
+EnvironmentFile=-%h/.config/lan-chat/lan-chat.env
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=%h/services/lan-chat/data
+
+[Install]
+WantedBy=default.target
